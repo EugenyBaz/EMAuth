@@ -1,6 +1,8 @@
+from requests import Response
 from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.decorators import action
 from users.models import User
 from users.serializers import UserSerializer, RegisterSerializer
 
@@ -23,3 +25,16 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     # permission_classes = [IsAuthenticated]
+
+    @action(detail=True, methods=['post'])
+    def soft_delete(self, request, pk=None):
+        user = self.get_object()
+        user.is_active = False
+        user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        response.delete_cookie('access')
+        return response
