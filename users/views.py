@@ -1,4 +1,4 @@
-from requests import Response
+from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -32,10 +32,11 @@ class UserViewSet(ModelViewSet):
         user = self.get_object()
         user.is_active = False
         user.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        response = Response({})
+        response.status_code = status.HTTP_204_NO_CONTENT
+        return response
 
 class LogoutView(APIView):
     def post(self, request):
-        response = Response({"message": "Вы вышли из аккаунта"}, status=status.HTTP_200_OK)
-        response.delete_cookie('access')
-        return response
+        return Response({"message": "Вы вышли из аккаунта"}, status=status.HTTP_200_OK)
