@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
@@ -12,7 +13,7 @@ class RegistrationView(CreateAPIView):
     """ Проводим регистрацию пользователя """
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    # permission_classes = (AllowAny,)
+    permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
@@ -25,7 +26,7 @@ class UserViewSet(ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @action(detail=True, methods=['post'])
     def soft_delete(self, request, pk=None):
