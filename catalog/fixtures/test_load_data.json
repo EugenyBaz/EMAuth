@@ -1,0 +1,92 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "users"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "moders"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "admins"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "email": "user@example.com",
+      "password": "pbkdf2_sha256$1000000$A5ZiXqyYIpi0BnwoJvCneo$ig3q1lLuimH+HxFKnlDr5D3BgadoZZ9YcDWbF9atv+E=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "email": "moder@example.com",
+      "password": "pbkdf2_sha256$1000000$3JDdTj7ZYrOSKlOLdBbFou$3s9XG4g4ePWqKnpxqg9SsOG1v2J7O9M89sUhPmlQjOY=\n",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "groups": [2]
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "email": "admin@admin.com",
+      "password": "pbkdf2_sha256$1000000$iJNiMN2b3uBgM0UolxSIAR$hdwaP1OGj3+D3VzlaabiLYsfozedm3vCErrlpqI40t4=\n",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "groups": [3]
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Ноутбук",
+      "model": "Machcreator",
+      "description": "Рабочий ноутбук с отличной батареей",
+      "price": "80000.00",
+      "owner": 3
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Телефон",
+      "model": "iPhone 15",
+      "description": "Новый iPhone для тестирования",
+      "price": "120000.00",
+      "owner": 4
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Телевизор",
+      "model": "Sony",
+      "description": "Добротный, проверенный телевизор",
+      "price": "200000.00",
+      "owner": 3
+    }
+  }
+]
