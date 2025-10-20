@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 # from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.views import RegistrationView, UserViewSet, LogoutView
+from users.views import RegistrationView, UserViewSet, LogoutView, GroupViewSet
 
 
 def home(request):
@@ -11,6 +11,7 @@ def home(request):
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
 
 urlpatterns = [
     path("", home, name='home'),
