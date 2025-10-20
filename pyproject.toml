@@ -21,12 +21,17 @@ djangorestframework-simplejwt = "^5.5.1"
 django-filter = "^25.2"
 coverage = "^7.11.0"
 postgres = "^4.0"
+pytest-django = "^4.11.1"
 
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "^7.3.0"
 black = "^25.9.0"
 isort = "^7.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.11.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -38,4 +43,7 @@ exclude = '''(\.git)'''
 
 [tool.isort]
 line_length = 119
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
 
