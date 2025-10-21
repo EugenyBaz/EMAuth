@@ -28,19 +28,14 @@ class IsOwner(permissions.BasePermission):
 class IsOwnerOrModer(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        return (
-            request.user.groups.filter(name="Модераторы").exists()
-            or obj.owner == request.user
-        )
+        return request.user.groups.filter(name="Модераторы").exists() or obj.owner == request.user
 
 
 class NOTModerOrIsOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        return (
-            obj.owner == request.user
-            and not request.user.groups.filter(name="Модераторы").exists()
-        )
+        return obj.owner == request.user and not request.user.groups.filter(name="Модераторы").exists()
+
 
 class IsAdmin(BasePermission):
 

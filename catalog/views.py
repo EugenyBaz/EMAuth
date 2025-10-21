@@ -1,14 +1,18 @@
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
-from .models import Product
+
+from catalog.permissions import IsAdmin, IsOwnerOrModer, NOTModer, NOTModerOrIsOwner
 from catalog.serializers import ProductSerializer
-from catalog.permissions import IsOwnerOrModer, NOTModer, NOTModerOrIsOwner, IsAdmin
-from rest_framework import status
+
+from .models import Product
+
 
 class ProductViewSet(ModelViewSet):
-    """ Создаем представление по продуктам CRUD"""
+    """Создаем представление по продуктам CRUD"""
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -35,14 +39,13 @@ class ProductViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-
-
 # Имитация базы данных с продуктами
 MOCK_PRODUCTS = [
     {"id": 1, "name": "Телевизор Toshiba", "owner_id": 3, "price": 100000},
     {"id": 2, "name": "Телевизор TCL", "owner_id": 4, "price": 79900},
     {"id": 3, "name": "Телефон Samsung", "owner_id": 3, "price": 130000},
 ]
+
 
 class MockProductListView(APIView):
     """
@@ -51,13 +54,15 @@ class MockProductListView(APIView):
     - 403, если нет доступа к объекту
     - Иначе возвращает список "доступных" продуктов
     """
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         # Пользователь не залогинен
         if not request.user or not request.user.is_authenticated:
-            return Response({"detail": "Authentication credentials were not provided."},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
         user_id = request.user.id
         user_groups = [g.name for g in request.user.groups.all()]
@@ -71,6 +76,5 @@ class MockProductListView(APIView):
             # Владелец видит свои продукты
             elif product["owner_id"] == user_id:
                 list_products.append(product)
-
 
         return Response(list_products)

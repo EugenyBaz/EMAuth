@@ -1,6 +1,7 @@
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from django.urls import reverse
+
 from catalog.models import Product
 from users.models import User
 
@@ -25,15 +26,16 @@ class ProductTestCase(APITestCase):
         self.assertEqual(response.data["name"], "Test product")
 
     def test_product_create(self):
-        url = reverse('product-list')
+        url = reverse("product-list")
         data = {
             "name": "Test product",
-            "model":"XXX",
-            "description":"The best product",
-            "price":999.99,
-            "owner":self.user}
+            "model": "XXX",
+            "description": "The best product",
+            "price": 999.99,
+            "owner": self.user,
+        }
         response = self.client.post(url, data)
-        product = Product.objects.latest('id')
+        product = Product.objects.latest("id")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(float(product.price), data["price"])
 
@@ -44,7 +46,6 @@ class ProductTestCase(APITestCase):
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data.get("name"), "Test product_2")
-
 
     def test_product_delete(self):
         url = reverse("product-detail", args=(self.product.pk,))
@@ -57,6 +58,3 @@ class ProductTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) >= 1)
-
-
-

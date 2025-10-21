@@ -1,9 +1,10 @@
 from django.db import models
+
 from users.models import User
 
 
 class Product(models.Model):
-    """ Создаем модель для товаров"""
+    """Создаем модель для товаров"""
 
     name = models.CharField(max_length=255, verbose_name="Название товара")
     model = models.CharField(max_length=255, verbose_name="Модель")

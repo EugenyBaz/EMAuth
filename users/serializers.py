@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
         extra_kwargs = {"password": {"write_only": True}}
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
@@ -28,9 +29,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        """ Удаление confirm_password из validated_data"""
+        """Удаление confirm_password из validated_data"""
 
-        del validated_data['confirm_password']
+        del validated_data["confirm_password"]
         return super().create(validated_data)
 
 
