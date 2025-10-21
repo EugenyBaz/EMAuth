@@ -58,7 +58,7 @@
 
 Создание суперюзера:
 
-python manage.py createsuperuser
+python manage.py csu
 
 
 ### Тестовые данные
