@@ -7,8 +7,43 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+djangorestframework = "^3.16.1"
+django = "^5.2.7"
+requests = "^2.32.5"
+python-dotenv = "^1.1.1"
+pytest = "^8.4.2"
+pytest-cov = "^7.0.0"
+psycopg2-binary = "^2.9.11"
+pillow = "^12.0.0"
+ipython = "^9.6.0"
+redis = "^6.4.0"
+djangorestframework-simplejwt = "^5.5.1"
+django-filter = "^25.2"
+coverage = "^7.11.0"
+postgres = "^4.0"
+pytest-django = "^4.11.1"
 
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.3.0"
+black = "^25.9.0"
+isort = "^7.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.11.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 119
+exclude = '''(\.git)'''
+
+[tool.isort]
+line_length = 119
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+
