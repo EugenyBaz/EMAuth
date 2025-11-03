@@ -2,8 +2,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from catalog.models import Product
-from users.models import User
+from src.catalog.models import Product
+from src.users.models import User
 
 
 class ProductTestCase(APITestCase):

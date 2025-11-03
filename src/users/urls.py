@@ -1,11 +1,7 @@
 from django.http import HttpResponse
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-
-# from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-from users.views import GroupViewSet, LogoutView, RegistrationView, UserViewSet
+from users.views import GroupViewSet, LogoutView, RegistrationView, UserViewSet, LoginView
 
 
 def home(request):
@@ -20,6 +16,6 @@ urlpatterns = [
     path("", home, name="home"),
     path("", include(router.urls)),
     path("register/", RegistrationView.as_view(), name="register"),
-    path("login/", TokenObtainPairView.as_view(), name="login"),
+    path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
 ]
