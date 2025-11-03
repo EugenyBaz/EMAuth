@@ -1,5 +1,6 @@
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from typing import List
+
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -9,6 +10,12 @@ from catalog.serializers import ProductSerializer
 
 from .models import Product
 
+# Имитация базы данных с продуктами
+MOCK_PRODUCTS = [
+    {"id": 1, "name": "Телевизор Toshiba", "owner_id": 3, "price": 100000},
+    {"id": 2, "name": "Телевизор TCL", "owner_id": 4, "price": 79900},
+    {"id": 3, "name": "Телефон Samsung", "owner_id": 3, "price": 130000},
+]
 
 class ProductViewSet(ModelViewSet):
     """Создаем представление по продуктам CRUD"""
@@ -16,11 +23,12 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer) -> None:
+        """ Назначаем владельца продукта при создании"""
         serializer.save(owner=self.request.user)
 
-    def get_permissions(self):
-
+    def get_permissions(self) -> List[BasePermission]:
+        """ Определяем права доступа для действий"""
         if self.request.user.is_superuser:
             return [IsAdmin()]
 
@@ -34,17 +42,11 @@ class ProductViewSet(ModelViewSet):
             permission_classes = [IsAuthenticated]
         return [perm() for perm in permission_classes]
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs)-> Response:
+        """ Лог запроса авторизации """
         print("AUTH HEADER:", request.META.get("HTTP_AUTHORIZATION"))
         return super().list(request, *args, **kwargs)
 
-
-# Имитация базы данных с продуктами
-MOCK_PRODUCTS = [
-    {"id": 1, "name": "Телевизор Toshiba", "owner_id": 3, "price": 100000},
-    {"id": 2, "name": "Телевизор TCL", "owner_id": 4, "price": 79900},
-    {"id": 3, "name": "Телефон Samsung", "owner_id": 3, "price": 130000},
-]
 
 
 class MockProductListView(APIView):
@@ -57,24 +59,14 @@ class MockProductListView(APIView):
 
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        # Пользователь не залогинен
-        if not request.user or not request.user.is_authenticated:
-            return Response(
-                {"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED
-            )
-
+    def get(self, request) -> Response :
+        """Возвращаем список доступных пользователю продуктов"""
         user_id = request.user.id
         user_groups = [g.name for g in request.user.groups.all()]
 
-        list_products = []
-
-        for product in MOCK_PRODUCTS:
-            # Модератор видит все продукты
-            if "moders" in user_groups or "admins" in user_groups:
-                list_products.append(product)
-            # Владелец видит свои продукты
-            elif product["owner_id"] == user_id:
-                list_products.append(product)
+        if "moders" in user_groups or "admins" in user_groups:
+            list_products = MOCK_PRODUCTS
+        else:
+            list_products = [p for p in MOCK_PRODUCTS if p["owner_id"] == user_id]
 
         return Response(list_products)

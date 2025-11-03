@@ -19,7 +19,7 @@ class CustomGroupAdmin(GroupAdmin):
     list_display = ("id", "name", "members")
     search_fields = ("name",)
 
-    def members(self, obj):
-        return ", ".join([u.email for u in obj.user_set.all()])
+    def members(self, group_instance):
+        return ", ".join([user.email for user in group_instance.user_set.all()])
 
     members.short_description = "Пользователи"
